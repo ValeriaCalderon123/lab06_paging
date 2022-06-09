@@ -15,20 +15,24 @@ class ListCategory : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_category)
-        val roo: SaveAnimalsDB = Room.databaseBuilder(this, SaveAnimalsDB::class.java, "save2").build()
+        val roo: SaveAnimalsDB =
+            Room.databaseBuilder(this, SaveAnimalsDB::class.java, "save2").build()
 
-        lifecycleScope.launch { val people = roo.categoryDao().getAll();  val people2 = roo.categoryDao().insert(
-            Category("aves",5,true)
-        ); }
+        lifecycleScope.launch {
+            val people = roo.categoryDao().getAll();
+            val people2 = roo.categoryDao().insert(
+                Category("aves", 5, true)
+            );
+        }
 
         var btnSave = findViewById<Button>(R.id.button)
 
         btnSave.setOnClickListener {
             lifecycleScope.launch {
                 val people = roo.categoryDao().getAll();
-                Log.d("PersonVALEEE:" ,"MSES")
+                Log.d("PersonVALEEE:", "MSES")
                 for (p in people) {
-                    Log.d("Person:", p.name_category )
+                    Log.d("Person:", p.name_category)
                 }
 
             }

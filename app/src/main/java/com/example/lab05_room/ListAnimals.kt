@@ -19,17 +19,5 @@ class ListAnimals : AppCompatActivity() {
 
         lifecycleScope.launch { val people = roo.categoryDao().getAll()}
 
-        var btnSave = findViewById<Button>(R.id.button2)
-
-        btnSave.setOnClickListener {
-            lifecycleScope.launch {
-                val people = roo.categoryDao().getAll();
-                Log.d("PersonVALEEE:" ,"MSES")
-                for (p in people) {
-                    Log.d("Person:", p.name_category )
-                }
-
-            }
-        }
     }
 }

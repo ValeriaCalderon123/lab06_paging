@@ -1,5 +1,6 @@
 package com.example.lab05_room.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.lab05_room.data.entity.Animals
 
