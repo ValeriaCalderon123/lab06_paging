@@ -20,9 +20,12 @@ class ListCategory : AppCompatActivity() {
 
         lifecycleScope.launch {
             val people = roo.categoryDao().getAll();
-            val people2 = roo.categoryDao().insert(
-                Category("aves", 5, true)
-            );
+            roo.categoryDao().insert(
+                Category(0, "AVES", 15, true)
+            )
+            roo.categoryDao().insert(
+                Category(0, "MAMIFEROS", 45, true)
+            )
         }
 
         var btnSave = findViewById<Button>(R.id.button)

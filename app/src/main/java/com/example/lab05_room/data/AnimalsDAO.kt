@@ -9,6 +9,9 @@ interface AnimalsDAO {
     @Query("SELECT * FROM Animals")
     suspend fun getAll(): List<Animals>
 
+    @Query("SELECT * FROM Animals WHERE id_animal = :id_animal")
+    fun getAnimalById(id_animal: Int): Animals
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(animal: Animals)
 

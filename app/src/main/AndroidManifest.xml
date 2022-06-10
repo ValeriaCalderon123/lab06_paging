@@ -14,7 +14,18 @@
         android:theme="@style/Theme.Lab05_room"
         tools:targetApi="31">
         <activity
+            android:name=".ReadAnimals"
+            android:parentActivityName=".ListAnimals"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateAnimals"
+            android:exported="false" />
+        <activity
+            android:name=".CreateAnimals"
+            android:exported="false" />
+        <activity
             android:name=".ListAnimals"
+            android:parentActivityName=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ListCategory"
