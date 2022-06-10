@@ -18,3 +18,4 @@ interface CategoryDAO {
     @Delete
     suspend fun delete(animal: Category)
 }
+
