@@ -43,7 +43,7 @@ class AnimalsAdapter(private val allAnimals: List<MAnimal>) :
         fun bind(it: MAnimal, position: Int) {
             nameAnimal.text = it.name_animal
             categoryName.text = it.category_name
-            if(it.status_animal) {
+            if (it.status_animal) {
                 statusAnimal.text = "En peligro"
             } else {
                 statusAnimal.text = "Fuera de Peligro"

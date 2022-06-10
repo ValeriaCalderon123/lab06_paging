@@ -24,7 +24,7 @@ class ListAnimals : AppCompatActivity() {
         setContentView(R.layout.activity_list_animals)
 
         val roo: SaveAnimalsDB =
-            Room.databaseBuilder(this, SaveAnimalsDB::class.java, "save2")
+            Room.databaseBuilder(this, SaveAnimalsDB::class.java, "animals")
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration().build()
 
