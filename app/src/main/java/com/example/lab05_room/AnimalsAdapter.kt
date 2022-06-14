@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab05_room.data.MAnimal
+import com.example.lab05_room.data.entity.Animals
 
-class AnimalsAdapter(private val allAnimals: List<MAnimal>) :
+class AnimalsAdapter(private val allAnimals: List<Animals>) :
     RecyclerView.Adapter<AnimalsAdapter.ViewHolder>() {
 
     private lateinit var mListener: onItemClickListener
 
     interface onItemClickListener {
-        fun onItemClick(animal: MAnimal)
+        fun onItemClick(animal: Animals)
     }
 
     fun setOnItemClickListener(listener: onItemClickListener) {
@@ -40,14 +41,10 @@ class AnimalsAdapter(private val allAnimals: List<MAnimal>) :
         private val categoryName: TextView = itemView.findViewById(R.id.categoryNameCard)
         private val statusAnimal: TextView = itemView.findViewById(R.id.statusAnimalCard)
 
-        fun bind(it: MAnimal, position: Int) {
-            nameAnimal.text = it.name_animal
-            categoryName.text = it.category_name
-            if (it.status_animal) {
-                statusAnimal.text = "En peligro"
-            } else {
-                statusAnimal.text = "Fuera de Peligro"
-            }
+        fun bind(it: Animals, position: Int) {
+            nameAnimal.text = it.main_common_name
+            categoryName.text = it.class_name
+
         }
 
     }

@@ -1,59 +1,52 @@
 package com.example.lab05_room
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
-import com.example.lab05_room.data.MAnimal
-import com.example.lab05_room.data.SaveAnimalsDB
-import com.example.lab05_room.data.entity.Animals
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.util.Log
+import com.example.lab05_room.data.APIService
+import com.example.lab05_room.databinding.ActivityListAnimalsBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.ArrayList
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ListAnimals : AppCompatActivity() {
+
+    private lateinit var binding: ActivityListAnimalsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list_animals)
+        binding = ActivityListAnimalsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val roo: SaveAnimalsDB =
-            Room.databaseBuilder(this, SaveAnimalsDB::class.java, "animals")
-                .allowMainThreadQueries()
-                .fallbackToDestructiveMigration().build()
+        initRecyclerView()
 
-        lifecycleScope.launch {
-            val rvListAnimals: RecyclerView = findViewById(R.id.rvListAnimals)
+        searchWithToken()
 
-            rvListAnimals.apply {
-                layoutManager = LinearLayoutManager(this@ListAnimals)
-                val allAnimals: List<Animals> = roo.animalDao().getAll()
-                val modifiedAnimals: ArrayList<MAnimal> = ArrayList()
-                for (animal in allAnimals) {
-                    modifiedAnimals.add(
-                        MAnimal(
-                            animal.id_animal,
-                            animal.name_animal,
-                            "Nuevo",
-                            animal.status_animal
-                        )
-                    )
-                }
-                adapter = AnimalsAdapter(modifiedAnimals).apply {
-                    this.setOnItemClickListener(object : AnimalsAdapter.onItemClickListener {
-                        override fun onItemClick(animal: MAnimal) {
-                            val intent = Intent(this@ListAnimals, ReadAnimals::class.java).apply {
-                                putExtra("id_animal", animal.id_animal)
-                            }
-                            startActivity(intent)
-                        }
-                    })
-                }
+    }
+
+    private fun initRecyclerView() {
+        TODO("Not yet implemented")
+    }
+
+    private fun getRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://apiv3.iucnredlist.org/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private fun searchWithToken() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val call = getRetrofit().create(APIService::class.java).getAnimals()
+            val animals = call.body()
+            if (call.isSuccessful) {
+                //RecyclerView
+            } else {
+                //Error
+                Log.e("ERROR:", "Se rompió")
             }
         }
-
     }
 }
