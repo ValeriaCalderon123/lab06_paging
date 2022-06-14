@@ -10,13 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnCRUDCategory: Button = findViewById(R.id.btnCRUDCategory)
-        val btnCRUDAnimals: Button = findViewById(R.id.btnCRUDAnimals)
-
-        btnCRUDCategory.setOnClickListener {
-            val intent = Intent(this, ListCategory::class.java)
-            startActivity(intent)
-        }
+        val btnCRUDAnimals: Button = findViewById(R.id.btnListAnimals)
 
         btnCRUDAnimals.setOnClickListener {
             val intent = Intent(this, ListAnimals::class.java)

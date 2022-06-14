@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.example.lab05_room.data.SaveAnimalsDB
 import com.example.lab05_room.data.entity.Animals
-import com.example.lab05_room.data.entity.Category
 import kotlinx.coroutines.launch
 
 class ReadAnimals : AppCompatActivity() {
@@ -32,38 +31,14 @@ class ReadAnimals : AppCompatActivity() {
 
         lifecycleScope.launch {
             val animal: Animals = roo.animalDao().getAnimalById(idAnimal)
-            val categoryList: List<Category> = roo.categoryDao().getAll()
-            var nameCategory = ""
-            for (category in categoryList) {
-                if (category.id_category == animal.id_category) {
-                    nameCategory = category.name_category
-                }
-            }
             idAnimalTV.text = animal.id_animal.toString()
             nameAnimal.text = animal.name_animal
-            categoryAnimal.text = nameCategory
+            categoryAnimal.text = "Nuevo Dato"
             if (animal.status_animal) {
                 statusAnimal.text = "En peligro"
             } else {
                 statusAnimal.text = "Fuera de Peligro"
             }
-        }
-
-        val btnEditAnimal: Button = findViewById(R.id.btnEditAnimal)
-        val btnDeleteAnimal: Button = findViewById(R.id.btnDeleteAnimal)
-
-        btnEditAnimal.setOnClickListener {
-            val intent = Intent(this, UpdateAnimals::class.java)
-            intent.putExtra("id_animal", idAnimal)
-            startActivity(intent)
-        }
-        btnDeleteAnimal.setOnClickListener {
-            lifecycleScope.launch {
-                val animal: Animals = roo.animalDao().getAnimalById(idAnimal)
-                roo.animalDao().delete(animal)
-            }
-            val intent = Intent(this, ListAnimals::class.java)
-            startActivity(intent)
         }
 
     }
