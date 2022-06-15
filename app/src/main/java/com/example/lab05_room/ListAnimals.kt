@@ -3,8 +3,11 @@ package com.example.lab05_room
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lab05_room.data.APIService
 import com.example.lab05_room.databinding.ActivityListAnimalsBinding
+import kotlinx.android.synthetic.main.activity_list_animals.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,14 +23,19 @@ class ListAnimals : AppCompatActivity() {
         binding = ActivityListAnimalsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initRecyclerView()
+       // initRecyclerView()
 
         searchWithToken()
-
+        initRecyclerView()
     }
 
     private fun initRecyclerView() {
-        TODO("Not yet implemented")
+       rvListAnimals.apply{
+            layoutManager = LinearLayoutManager(this@ListAnimals)
+           val decoration = DividerItemDecoration(applicationContext,DividerItemDecoration.VERTICAL)
+           addItemDecoration(decoration)
+           //adapter =
+       }
     }
 
     private fun getRetrofit(): Retrofit {
