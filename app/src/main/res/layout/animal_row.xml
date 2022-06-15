@@ -11,22 +11,34 @@
             android:id="@+id/nameAnimalCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aguila Monera"
-            android:textSize="24sp" />
+            android:text="Nombe Animal"
+            android:textSize="19sp" />
 
         <TextView
-            android:id="@+id/categoryNameCard"
+            android:id="@+id/phylumName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Aves"
-            android:textSize="24sp" />
+            android:textSize="19sp" />
 
         <TextView
-            android:id="@+id/statusAnimalCard"
+            android:id="@+id/kindomName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="true"
-            android:textSize="24sp" />
+            android:textSize="19sp" />
+        <TextView
+            android:id="@+id/nameScience"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre cientifico"
+            android:textSize="19sp" />
+        <TextView
+            android:id="@+id/nameSpecies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre de especie"
+            android:textSize="19sp" />
 
 
 </LinearLayout>
