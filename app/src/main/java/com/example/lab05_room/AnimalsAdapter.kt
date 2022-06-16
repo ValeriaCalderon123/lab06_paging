@@ -1,58 +1,32 @@
 package com.example.lab05_room
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.example.lab05_room.data.MAnimal
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import com.example.lab05_room.data.entity.Animals
 
 
-class AnimalsAdapter(private val allAnimals: List<Animals>) :
-    RecyclerView.Adapter<AnimalsAdapter.ViewHolder>() {
+class AnimalsAdapter : PagingDataAdapter<Animals, AnimalsViewHolder>(AnimalsComparator) {
 
-    private lateinit var mListener: onItemClickListener
-
-    interface onItemClickListener {
-        fun onItemClick(animal: Animals)
-    }
-
-    fun setOnItemClickListener(listener: onItemClickListener) {
-        mListener = listener
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnimalsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.animal_row, parent, false)
-        return ViewHolder(view)
+        return AnimalsViewHolder(view)
     }
 
-    override fun getItemCount() = allAnimals.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       // NEW
-    //    holder.bind(getItem(position)!!)
-       //OLD
-        /*
-        allAnimals[position].let { holder.bind(it, position) }
-        holder.itemView.setOnClickListener {
-            mListener.onItemClick(allAnimals[position])
-        }*/
+    override fun onBindViewHolder(holder: AnimalsViewHolder, position: Int) {
+        val item = getItem(position)
+        item?.let { holder.bind(it) }
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        private val nameAnimal: TextView = itemView.findViewById(R.id.nameAnimalCard)
-        private val phylumName: TextView = itemView.findViewById(R.id.phylumName)
-        private val kindomName: TextView = itemView.findViewById(R.id.kindomName)
-
-        fun bind(it: Animals) {
-            nameAnimal.text = it.main_common_name
-            phylumName.text = it.phylum_name
-            kindomName.text = it.kingdom_name
-
+    object AnimalsComparator : DiffUtil.ItemCallback<Animals>() {
+        override fun areItemsTheSame(oldItem: Animals, newItem: Animals): Boolean {
+            return oldItem.taxonid == newItem.taxonid
         }
 
+        override fun areContentsTheSame(oldItem: Animals, newItem: Animals): Boolean {
+            return oldItem == newItem
+        }
     }
 
 }

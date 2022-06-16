@@ -2,58 +2,53 @@ package com.example.lab05_room
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lab05_room.data.APIService
 import com.example.lab05_room.databinding.ActivityListAnimalsBinding
 import kotlinx.android.synthetic.main.activity_list_animals.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class ListAnimals : AppCompatActivity() {
 
     private lateinit var binding: ActivityListAnimalsBinding
+    lateinit var animalsViewModel: AnimalsViewModel
+    lateinit var animalsAdapter: AnimalsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListAnimalsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       // initRecyclerView()
-
-        searchWithToken()
+        setupViewModel()
+        setupList()
         initRecyclerView()
     }
 
+    private fun setupViewModel() {
+        val factory = AnimalsViewModelFactory(APIService())
+        animalsViewModel = ViewModelProvider(this, factory).get(AnimalsViewModel::class.java)
+    }
+
+    private fun setupList() {
+        animalsAdapter = AnimalsAdapter()
+        rvListAnimals.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = animalsAdapter.withLoadStateHeaderAndFooter(
+                header = AnimalsLoadStateAdapter { animalsAdapter.retry() },
+                footer = AnimalsLoadStateAdapter { animalsAdapter.retry() }
+            )
+            setHasFixedSize(true)
+        }
+
+    }
+
     private fun initRecyclerView() {
-       rvListAnimals.apply{
-            layoutManager = LinearLayoutManager(this@ListAnimals)
-           val decoration = DividerItemDecoration(applicationContext,DividerItemDecoration.VERTICAL)
-           addItemDecoration(decoration)
-           //adapter =
-       }
-    }
-
-    private fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("https://apiv3.iucnredlist.org/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    private fun searchWithToken() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val call = getRetrofit().create(APIService::class.java).getAnimals()
-            val animals = call.body()
-            if (call.isSuccessful) {
-                //RecyclerView
-            } else {
-                //Error
-                Log.e("ERROR:", "Se rompió")
+        lifecycleScope.launch {
+            animalsViewModel.pager.collectLatest { pagedData ->
+                animalsAdapter.submitData(pagedData)
             }
         }
     }
